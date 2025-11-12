@@ -1,0 +1,170 @@
+# Semantic Model: amp_conversation_metrics_with_tool_calls_model
+# Generated on: 2025-08-20T13:13:26.933995
+# Source table: parloa-prod-weu.analytics.amp_conversation_metrics_with_tool_calls
+# Generation confidence: 45.03%
+
+semantic_model:
+  name: amp_conversation_metrics_with_tool_calls_model
+  description: Test model
+  model: ref('parloa-prod-weu.analytics.amp_conversation_metrics_with_tool_calls')
+  defaults:
+    agg_time_dimension: tool_call_timestamp
+  dimensions:
+  - name: tenant_id
+    type: categorical
+    expr: tenant_id
+    description: The unique identifier for each customer, used for row-level security in AMP Insights.
+  - name: conversation_id
+    type: categorical
+    expr: conversation_id
+    description: Unique identifier for each conversation.
+  - name: platform_name
+    type: categorical
+    expr: platform_name
+    description: 'Platform where the conversation happened, for AMP it can be one of: `ORCHESTRATOR/PHONE`, `VG_PHONE`.'
+  - name: agent_id
+    type: categorical
+    expr: agent_id
+    description: Agent id for the agent used in the conversation. This can be found in the agent url in AMP Studio.
+  - name: agent_version_id
+    type: categorical
+    expr: agent_version_id
+    description: Agent version id for the agent used in the conversation.
+  - name: tenant_name
+    type: categorical
+    expr: tenant_name
+    description: Human-readable identifier for each customer.
+  - name: tool_call_name
+    type: categorical
+    expr: tool_call_name
+    description: The name of the tool that was called.
+  - name: tool_call_timestamp
+    type: time
+    expr: tool_call_timestamp
+    description: Timestamp when the tool call output was received. Timezone is UTC.
+    type_params:
+      time_granularity:
+      - hour
+      - day
+      - week
+      - month
+      - quarter
+      - year
+  - name: amp_llmo_conversation_start_timestamp
+    type: time
+    expr: amp_llmo_conversation_start_timestamp
+    description: Timestamp when the conversation started. This is the timestamp of the first event in the conversation.
+    type_params:
+      time_granularity:
+      - hour
+      - day
+      - week
+      - month
+      - quarter
+      - year
+  measures:
+  - name: tool_call_status_sum
+    agg: sum
+    expr: tool_call_status
+    description: SUM of tool_call_status
+  - name: has_user_input_event_sum
+    agg: sum
+    expr: has_user_input_event
+    description: SUM of has_user_input_event
+  - name: tool_call_status_avg
+    agg: avg
+    expr: tool_call_status
+    description: AVG of tool_call_status
+  - name: is_knowledge_tool_skill_sum
+    agg: sum
+    expr: is_knowledge_tool_skill
+    description: SUM of is_knowledge_tool_skill
+  - name: is_tool_call_successful_sum
+    agg: sum
+    expr: is_tool_call_successful
+    description: SUM of is_tool_call_successful
+  - name: has_tool_calls_sum
+    agg: sum
+    expr: has_tool_calls
+    description: SUM of has_tool_calls
+metrics:
+- name: total_tool_call_status
+  description: Total tool call status
+  type: simple
+  type_params:
+    measure:
+      name: tool_call_status
+      agg: sum
+  filter: null
+- name: has_user_input_event_rate
+  description: has user input event rate
+  type: simple
+  type_params:
+    measure:
+      name: has_user_input_event
+      agg: sum
+  filter: null
+- name: avg_tool_call_status
+  description: Average tool call status
+  type: simple
+  type_params:
+    measure:
+      name: tool_call_status
+      agg: avg
+  filter: null
+- name: is_knowledge_tool_skill_rate
+  description: is knowledge tool skill rate
+  type: simple
+  type_params:
+    measure:
+      name: is_knowledge_tool_skill
+      agg: sum
+  filter: null
+- name: is_tool_call_successful_rate
+  description: is tool call successful rate
+  type: simple
+  type_params:
+    measure:
+      name: is_tool_call_successful
+      agg: sum
+  filter: null
+- name: has_tool_calls_rate
+  description: has tool calls rate
+  type: simple
+  type_params:
+    measure:
+      name: has_tool_calls
+      agg: sum
+  filter: null
+- name: has_user_input_event_count
+  description: Count of has user input event
+  type: simple
+  type_params:
+    measure:
+      name: has_user_input_event
+      agg: sum
+  filter: null
+- name: is_knowledge_tool_skill_count
+  description: Count of is knowledge tool skill
+  type: simple
+  type_params:
+    measure:
+      name: is_knowledge_tool_skill
+      agg: sum
+  filter: null
+- name: is_tool_call_successful_count
+  description: Count of is tool call successful
+  type: simple
+  type_params:
+    measure:
+      name: is_tool_call_successful
+      agg: sum
+  filter: null
+- name: has_tool_calls_count
+  description: Count of has tool calls
+  type: simple
+  type_params:
+    measure:
+      name: has_tool_calls
+      agg: sum
+  filter: null

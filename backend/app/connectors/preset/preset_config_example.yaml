@@ -1,0 +1,128 @@
+# Preset Configuration Example for Semantic Layer
+# This file shows how to configure Preset to connect to the Semantic Layer SQL API
+
+# Database Connection
+database:
+  name: "Semantic Layer"
+  type: "postgresql"
+  configuration:
+    host: "localhost"
+    port: 5433
+    database: "semantic_layer"
+    username: "preset_user"
+    # No password required with trust authentication
+    
+  # Advanced settings
+  extra:
+    engine_params:
+      pool_size: 50
+      max_overflow: 100
+      pool_pre_ping: true
+      pool_recycle: 3600
+      connect_args:
+        sslmode: "prefer"
+        application_name: "preset_semantic_layer"
+        options: "-c statement_timeout=300000"  # 5 minutes
+    
+    # Performance optimizations
+    cost_estimate_enabled: true
+    allows_subquery: true
+    allows_joins: true
+    has_implicit_cancel: true
+    allows_virtual_table_explore: true
+
+# Cache Configuration
+cache:
+  # Default cache timeout for datasets
+  dataset_cache_timeout: 300  # 5 minutes
+  
+  # Default cache timeout for charts
+  chart_cache_timeout: 300
+  
+  # Schema cache timeout
+  schema_cache_timeout: 86400  # 24 hours
+
+# Query Settings
+queries:
+  # Row limit for queries
+  row_limit: 50000
+  
+  # SQL Lab timeout
+  sql_lab_timeout: 300  # 5 minutes
+  
+  # Async query timeout
+  async_query_timeout: 600  # 10 minutes
+  
+  # Enable async queries
+  enable_async_queries: true
+
+# Dataset Defaults
+dataset_defaults:
+  # Enable cross-filtering
+  enable_cross_filtering: true
+  
+  # Default time grain
+  time_grain: "P1D"  # Daily
+  
+  # Default row limit
+  row_limit: 10000
+
+# Chart Defaults
+chart_defaults:
+  # Color scheme
+  color_scheme: "supersetColors"
+  
+  # Number formats
+  formats:
+    currency: "$,.0f"
+    percentage: ".1%"
+    number: ",.0f"
+    decimal: ",.2f"
+
+# Dashboard Settings
+dashboard:
+  # Auto refresh
+  auto_refresh: false
+  
+  # Default filter configuration
+  cross_filter_scoping: true
+  
+  # Grid configuration
+  grid_columns: 48
+  grid_row_height: 50
+
+# Semantic Layer Specific Settings
+semantic_layer:
+  # Schema prefix for semantic models
+  schema_prefix: "sem_"
+  
+  # Default fact table name
+  fact_table_name: "fact"
+  
+  # Metric view prefix
+  metric_view_prefix: "v_"
+  
+  # Auto-sync configuration
+  auto_sync:
+    enabled: true
+    frequency: "daily"
+    time: "02:00"
+
+# Security Settings
+security:
+  # Row level security
+  enable_row_level_security: true
+  
+  # Public role permissions
+  public_role_like: "Gamma"
+  
+  # Feature flags
+  features:
+    ENABLE_TEMPLATE_PROCESSING: true
+    DASHBOARD_CROSS_FILTERS: true
+    DASHBOARD_NATIVE_FILTERS: true
+    ENABLE_JAVASCRIPT_CONTROLS: false
+
+
+
+

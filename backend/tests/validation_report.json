@@ -1,0 +1,227 @@
+{
+  "discipline": "test-code",
+  "timestamp": "2025-01-27T00:00:00Z",
+  "language": "python",
+  "framework": "pytest",
+  "helper_patterns": {
+    "violations": [
+      {
+        "file": "backend/tests/unit/test_models.py",
+        "line": 5,
+        "severity": "critical",
+        "rule": "import_error",
+        "violation": "Importing 'SemanticModel' from 'app.models.semantic_model' but actual module exports 'SemanticModelCreate'",
+        "fix": "Update imports to match actual module exports or fix module to export expected classes"
+      },
+      {
+        "file": "backend/tests/unit/test_models.py",
+        "line": 6,
+        "severity": "critical",
+        "rule": "import_error",
+        "violation": "Importing enums 'EntityType', 'DimensionType', 'AggregationType', 'MetricType' but module uses string types",
+        "fix": "Update tests to use string literals instead of enum types or add enums to models"
+      },
+      {
+        "file": "backend/tests/unit/test_databricks_integration.py",
+        "line": 5,
+        "severity": "critical",
+        "rule": "import_error",
+        "violation": "Importing 'DatabricksClient' but actual module exports 'DatabricksConnector'",
+        "fix": "Update import to use 'DatabricksConnector' instead of 'DatabricksClient'"
+      },
+      {
+        "file": "backend/tests/unit/test_semantic_parser.py",
+        "line": 6,
+        "severity": "critical",
+        "rule": "import_error",
+        "violation": "Importing 'SemanticModel' from 'app.models.semantic_model' but module doesn't export it",
+        "fix": "Check actual module exports and update imports accordingly"
+      }
+    ],
+    "status": "fail"
+  },
+  "assertions": {
+    "violations": [
+      {
+        "file": "backend/tests/unit/test_models.py",
+        "line": 20,
+        "severity": "warning",
+        "rule": "multiple_assertions",
+        "violation": "Multiple assertions on same object (entity) - lines 25-27",
+        "fix": "Use single assertion with dictionary comparison or use pytest.approx for numerical comparisons"
+      },
+      {
+        "file": "backend/tests/unit/test_databricks_integration.py",
+        "line": 43,
+        "severity": "info",
+        "rule": "assertion_clarity",
+        "violation": "Assertion 'assert len(tables) > 0' could be more specific",
+        "fix": "Use 'assert len(tables) == 1' or verify specific table content"
+      }
+    ],
+    "status": "pass"
+  },
+  "type_safety": {
+    "violations": [
+      {
+        "file": "backend/tests/unit/test_models.py",
+        "line": 29,
+        "severity": "error",
+        "rule": "invalid_type_usage",
+        "violation": "Using string 'invalid_type' for Entity.type which expects enum-like values",
+        "fix": "Use proper type values or test with ValidationError as intended"
+      }
+    ],
+    "status": "fail"
+  },
+  "null_handling": {
+    "violations": [
+      {
+        "file": "backend/tests/unit/test_models.py",
+        "line": 60,
+        "severity": "warning",
+        "rule": "none_comparison",
+        "violation": "Using 'is None' comparison - acceptable in Python but consider using Optional type hints",
+        "fix": "Ensure proper Optional type hints are used in models"
+      }
+    ],
+    "status": "pass"
+  },
+  "naming_conventions": {
+    "violations": [
+      {
+        "file": "backend/tests/unit/test_models.py",
+        "line": 13,
+        "severity": "info",
+        "rule": "class_naming",
+        "violation": "Test class 'TestSemanticModelModels' could be 'TestSemanticModel' for brevity",
+        "fix": "Consider shorter, clearer test class names"
+      },
+      {
+        "file": "backend/tests",
+        "severity": "pass",
+        "rule": "file_naming",
+        "violation": "All test files correctly use 'test_' prefix",
+        "fix": "N/A"
+      }
+    ],
+    "status": "pass"
+  },
+  "test_architecture": {
+    "violations": [
+      {
+        "file": "backend/tests/unit/test_databricks_integration.py",
+        "line": 14,
+        "severity": "error",
+        "rule": "unit_test_mocking_external",
+        "violation": "Unit test mocking Databricks connection - this is correct for unit tests, but verify mocks are comprehensive",
+        "fix": "Ensure all external dependencies are properly mocked"
+      },
+      {
+        "file": "backend/tests/integration/test_api_endpoints.py",
+        "line": 25,
+        "severity": "warning",
+        "rule": "integration_test_mocking",
+        "violation": "Integration test mocks Databricks connection - should use real connection or Testcontainers",
+        "fix": "Use Testcontainers for real Databricks connection in integration tests, or document why mocking is acceptable"
+      },
+      {
+        "file": "backend/tests/integration/test_api_endpoints.py",
+        "line": 86,
+        "severity": "error",
+        "rule": "integration_test_error_scenarios",
+        "violation": "Integration test mocks service layer - should test real service integration",
+        "fix": "Integration tests should use real services, not mocked services"
+      },
+      {
+        "file": "backend/tests/unit/test_lineage_visualization.py",
+        "line": 579,
+        "severity": "info",
+        "rule": "e2e_in_unit_test",
+        "violation": "Class 'TestLineageIntegration' is in unit test directory but contains integration-style tests",
+        "fix": "Move integration tests to backend/tests/integration/ directory"
+      }
+    ],
+    "status": "fail"
+  },
+  "mock_patterns": {
+    "violations": [
+      {
+        "file": "backend/tests/conftest.py",
+        "line": 19,
+        "severity": "pass",
+        "rule": "fixture_reusability",
+        "violation": "Good use of pytest fixtures for reusable mocks",
+        "fix": "N/A"
+      },
+      {
+        "file": "backend/tests/unit/test_databricks_integration.py",
+        "line": 171,
+        "severity": "warning",
+        "rule": "mock_reset",
+        "violation": "Using time.sleep mock - ensure proper cleanup",
+        "fix": "Add proper teardown or use pytest fixtures with automatic cleanup"
+      }
+    ],
+    "status": "pass"
+  },
+  "test_isolation": {
+    "violations": [
+      {
+        "file": "backend/tests/integration/test_api_endpoints.py",
+        "line": 12,
+        "severity": "warning",
+        "rule": "shared_state",
+        "violation": "Using shared 'client' fixture - ensure tests don't modify shared state",
+        "fix": "Verify client fixture creates isolated test instances"
+      }
+    ],
+    "status": "pass"
+  },
+  "coverage": {
+    "violations": [
+      {
+        "file": "backend/tests",
+        "severity": "info",
+        "rule": "test_coverage",
+        "violation": "Cannot verify coverage without running tests - tests have import errors preventing execution",
+        "fix": "Fix import errors first, then run 'pytest --cov=app' to verify coverage"
+      }
+    ],
+    "status": "fail"
+  },
+  "prohibitions": {
+    "violations": [
+      {
+        "file": "backend/tests/unit/test_lineage_visualization.py",
+        "line": 644,
+        "severity": "info",
+        "rule": "test_main_guard",
+        "violation": "Using 'if __name__ == \"__main__\"' - acceptable in Python but not required for pytest",
+        "fix": "Remove - pytest discovers tests automatically"
+      }
+    ],
+    "status": "pass"
+  },
+  "summary": {
+    "critical": 4,
+    "errors": 4,
+    "warnings": 5,
+    "info": 4,
+    "total_files_analyzed": 7,
+    "total_tests_found": 59,
+    "tests_runnable": false,
+    "reason": "Import errors prevent test execution"
+  },
+  "recommendations": [
+    "Fix import errors - tests import classes that don't exist in actual codebase",
+    "Update test imports to match actual module structure",
+    "Move integration tests from unit test directory to integration directory",
+    "Consider using Testcontainers for real Databricks connections in integration tests",
+    "Ensure all external dependencies are properly mocked in unit tests",
+    "Add comprehensive error scenario testing in integration tests",
+    "Run pytest --cov=app after fixing imports to verify coverage"
+  ]
+}
+
+

@@ -1,0 +1,45 @@
+name: test_model
+description: A test semantic model for demonstration
+model: ref('demo.test_table')
+
+entities:
+  - name: tenant_id
+    type: primary
+    expr: tenant_id
+  - name: user_id
+    type: foreign
+    expr: user_id
+
+dimensions:
+  - name: created_date
+    type: time
+    expr: DATE(created_at)
+    time_granularity: [day, week, month, quarter, year]
+  - name: category
+    type: categorical
+    expr: category
+
+measures:
+  - name: total_count
+    agg: count
+    expr: "*"
+    description: Total number of records
+  - name: avg_value
+    agg: avg
+    expr: value_column
+    description: Average value
+
+metrics:
+  - name: total_records
+    type: simple
+    measure: total_count
+    description: Total number of records in the dataset
+  - name: average_value
+    type: simple
+    measure: avg_value
+    description: Average value across all records
+
+metadata:
+  category: demo
+  created_by: system
+  version: 1.0

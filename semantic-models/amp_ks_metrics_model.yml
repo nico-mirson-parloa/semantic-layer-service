@@ -1,0 +1,142 @@
+# Semantic Model: amp_ks_metrics_model
+# Generated on: 2025-08-19T19:17:32.843143
+# Source table: parloa-prod-weu.analytics.amp_ks_metrics
+# Generation confidence: 77.17%
+
+semantic_model:
+  name: amp_ks_metrics_model
+  description: semantic layer for ks metrics
+  model: ref('parloa-prod-weu.analytics.amp_ks_metrics')
+  defaults:
+    agg_time_dimension: null
+  dimensions:
+  - name: conversation_id
+    type: categorical
+    expr: conversation_id
+    description: Unique identifier for each conversation.
+  - name: tenant_id
+    type: categorical
+    expr: tenant_id
+    description: The unique identifier for each customer, used for row-level security in AMP Insights.
+  measures:
+  - name: nr_of_faq_responses_sum
+    agg: sum
+    expr: nr_of_faq_responses
+    description: SUM of nr_of_faq_responses
+  - name: min_similarity_score_sum
+    agg: sum
+    expr: min_similarity_score
+    description: SUM of min_similarity_score
+  - name: max_similarity_score_sum
+    agg: sum
+    expr: max_similarity_score
+    description: SUM of max_similarity_score
+  - name: avg_similarity_score_sum
+    agg: sum
+    expr: avg_similarity_score
+    description: SUM of avg_similarity_score
+  - name: min_chunk_length_sum
+    agg: sum
+    expr: min_chunk_length
+    description: SUM of min_chunk_length
+  - name: max_chunk_length_sum
+    agg: sum
+    expr: max_chunk_length
+    description: SUM of max_chunk_length
+  - name: avg_chunk_length_sum
+    agg: sum
+    expr: avg_chunk_length
+    description: SUM of avg_chunk_length
+  - name: avg_chunks_per_response_sum
+    agg: sum
+    expr: avg_chunks_per_response
+    description: SUM of avg_chunks_per_response
+  - name: nr_of_faq_responses_avg
+    agg: avg
+    expr: nr_of_faq_responses
+    description: AVG of nr_of_faq_responses
+  - name: is_uncertainty_call_sum
+    agg: sum
+    expr: is_uncertainty_call
+    description: SUM of is_uncertainty_call
+metrics:
+- name: total_nr_of_faq_responses
+  description: Total nr of faq responses
+  type: simple
+  type_params:
+    measure:
+      name: nr_of_faq_responses
+      agg: sum
+  filter: null
+- name: total_min_similarity_score
+  description: Total min similarity score
+  type: simple
+  type_params:
+    measure:
+      name: min_similarity_score
+      agg: sum
+  filter: null
+- name: total_max_similarity_score
+  description: Total max similarity score
+  type: simple
+  type_params:
+    measure:
+      name: max_similarity_score
+      agg: sum
+  filter: null
+- name: total_avg_similarity_score
+  description: Total avg similarity score
+  type: simple
+  type_params:
+    measure:
+      name: avg_similarity_score
+      agg: sum
+  filter: null
+- name: total_min_chunk_length
+  description: Total min chunk length
+  type: simple
+  type_params:
+    measure:
+      name: min_chunk_length
+      agg: sum
+  filter: null
+- name: total_max_chunk_length
+  description: Total max chunk length
+  type: simple
+  type_params:
+    measure:
+      name: max_chunk_length
+      agg: sum
+  filter: null
+- name: total_avg_chunk_length
+  description: Total avg chunk length
+  type: simple
+  type_params:
+    measure:
+      name: avg_chunk_length
+      agg: sum
+  filter: null
+- name: total_avg_chunks_per_response
+  description: Total avg chunks per response
+  type: simple
+  type_params:
+    measure:
+      name: avg_chunks_per_response
+      agg: sum
+  filter: null
+- name: avg_nr_of_faq_responses
+  description: Average nr of faq responses
+  type: simple
+  type_params:
+    measure:
+      name: nr_of_faq_responses
+      agg: avg
+  filter: null
+- name: is_uncertainty_call_rate
+  description: is uncertainty call rate
+  type: simple
+  type_params:
+    measure:
+      name: is_uncertainty_call
+      agg: sum
+  filter: null

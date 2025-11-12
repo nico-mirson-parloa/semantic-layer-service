@@ -1,0 +1,178 @@
+# Semantic Model: amp_chat_metrics_model
+# Generated on: 2025-08-22T17:49:27.313437
+# Source table: parloa-prod-weu.analytics.amp_chat_metrics
+# Generation confidence: 52.24%
+
+semantic_model:
+  name: amp_chat_metrics_model
+  description: amp_chat_metrics
+  model: ref('parloa-prod-weu.analytics.amp_chat_metrics')
+  defaults:
+    agg_time_dimension: conversation_start_timestamp
+  dimensions:
+  - name: tenant_id
+    type: categorical
+    expr: tenant_id
+    description: The unique identifier for each customer, used for row-level security in AMP Insights.
+  - name: tenant_name
+    type: categorical
+    expr: tenant_name
+    description: Human-readable identifier for each customer.
+  - name: conversation_id
+    type: categorical
+    expr: conversation_id
+    description: Unique identifier for each conversation.
+  - name: agent_name
+    type: categorical
+    expr: agent_name
+    description: The human-readable name of the agent used in the conversation.
+  - name: agent_version_id
+    type: categorical
+    expr: agent_version_id
+    description: Agent version id for the agent used in the conversation.
+  - name: conversation_start_timestamp
+    type: time
+    expr: conversation_start_timestamp
+    description: Timestamp when the first event in the conversation occurred.
+    type_params:
+      time_granularity:
+      - hour
+      - day
+      - week
+      - month
+      - quarter
+      - year
+  - name: conversation_end_timestamp
+    type: time
+    expr: conversation_end_timestamp
+    description: Timestamp when the last event in the conversation occurred.
+    type_params:
+      time_granularity:
+      - hour
+      - day
+      - week
+      - month
+      - quarter
+      - year
+  measures:
+  - name: user_input_turns_sum
+    agg: sum
+    expr: user_input_turns
+    description: SUM of user_input_turns
+  - name: avg_tool_call_elapsed_time_ms_sum
+    agg: sum
+    expr: avg_tool_call_elapsed_time_ms
+    description: SUM of avg_tool_call_elapsed_time_ms
+  - name: avg_llm_response_time_ms_sum
+    agg: sum
+    expr: avg_llm_response_time_ms
+    description: SUM of avg_llm_response_time_ms
+  - name: max_llm_response_time_ms_sum
+    agg: sum
+    expr: max_llm_response_time_ms
+    description: SUM of max_llm_response_time_ms
+  - name: user_input_turns_avg
+    agg: avg
+    expr: user_input_turns
+    description: AVG of user_input_turns
+  - name: has_user_input_sum
+    agg: sum
+    expr: has_user_input
+    description: SUM of has_user_input
+  - name: has_tool_calls_sum
+    agg: sum
+    expr: has_tool_calls
+    description: SUM of has_tool_calls
+  - name: avg_tool_call_elapsed_time_ms_avg
+    agg: avg
+    expr: avg_tool_call_elapsed_time_ms
+    description: AVG of avg_tool_call_elapsed_time_ms
+  - name: avg_llm_response_time_ms_avg
+    agg: avg
+    expr: avg_llm_response_time_ms
+    description: AVG of avg_llm_response_time_ms
+  - name: max_llm_response_time_ms_avg
+    agg: avg
+    expr: max_llm_response_time_ms
+    description: AVG of max_llm_response_time_ms
+metrics:
+- name: total_user_input_turns
+  description: Total user input turns
+  type: simple
+  type_params:
+    measure:
+      name: user_input_turns
+      agg: sum
+  filter: null
+- name: total_avg_tool_call_elapsed_time_ms
+  description: Total avg tool call elapsed time ms
+  type: simple
+  type_params:
+    measure:
+      name: avg_tool_call_elapsed_time_ms
+      agg: sum
+  filter: null
+- name: total_avg_llm_response_time_ms
+  description: Total avg llm response time ms
+  type: simple
+  type_params:
+    measure:
+      name: avg_llm_response_time_ms
+      agg: sum
+  filter: null
+- name: total_max_llm_response_time_ms
+  description: Total max llm response time ms
+  type: simple
+  type_params:
+    measure:
+      name: max_llm_response_time_ms
+      agg: sum
+  filter: null
+- name: avg_user_input_turns
+  description: Average user input turns
+  type: simple
+  type_params:
+    measure:
+      name: user_input_turns
+      agg: avg
+  filter: null
+- name: has_user_input_rate
+  description: has user input rate
+  type: simple
+  type_params:
+    measure:
+      name: has_user_input
+      agg: sum
+  filter: null
+- name: has_tool_calls_rate
+  description: has tool calls rate
+  type: simple
+  type_params:
+    measure:
+      name: has_tool_calls
+      agg: sum
+  filter: null
+- name: avg_avg_tool_call_elapsed_time_ms
+  description: Average avg tool call elapsed time ms
+  type: simple
+  type_params:
+    measure:
+      name: avg_tool_call_elapsed_time_ms
+      agg: avg
+  filter: null
+- name: avg_avg_llm_response_time_ms
+  description: Average avg llm response time ms
+  type: simple
+  type_params:
+    measure:
+      name: avg_llm_response_time_ms
+      agg: avg
+  filter: null
+- name: avg_max_llm_response_time_ms
+  description: Average max llm response time ms
+  type: simple
+  type_params:
+    measure:
+      name: max_llm_response_time_ms
+      agg: avg
+  filter: null

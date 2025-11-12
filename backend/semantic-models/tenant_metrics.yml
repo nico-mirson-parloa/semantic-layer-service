@@ -1,0 +1,55 @@
+name: tenant_metrics
+description: Semantic model for tenant_metrics
+model: ref('parloa-prod-weu')
+entities:
+- name: tenant_id
+  type: primary
+  expr: tenant_id
+dimensions:
+- name: tenant_id
+  type: categorical
+  expr: '`tenant_id`'
+- name: tenant_name
+  type: categorical
+  expr: '`tenant_name`'
+measures:
+- name: sum_tool_calls_count
+  agg: sum
+  expr: '`tool_calls_count`'
+  description: Sum of `tool_calls_count`
+- name: avg_duration
+  agg: avg
+  expr: '`amp_conversation_metrics_serving`.`call_duration_seconds`'
+  description: Avg of `amp_conversation_metrics_serving`.`call_duration_seconds`
+metrics:
+- name: tool_calls_per_tenant
+  type: simple
+  measure: sum_tool_calls_count
+  description: Count of tool_calls per tenant
+  sql: 'SELECT `tenant_id`, `tenant_name`, SUM(`tool_calls_count`) AS `total_tool_calls`
+    FROM `parloa-prod-weu`.`analytics`.`amp_chat_metrics` GROUP BY `tenant_id`, `tenant_name`
+
+    LIMIT 100'
+- name: avg_call_duration_per_tenant
+  type: simple
+  measure: avg_duration
+  description: Average call duration per tenant
+  sql: 'SELECT `amp_conversation_metrics_serving`.`tenant_name`, AVG(`amp_conversation_metrics_serving`.`call_duration_seconds`)
+    AS avg_call_duration_seconds
+
+    FROM `parloa-prod-weu`.`analytics`.`amp_conversation_metrics_serving`
+
+    WHERE `amp_conversation_metrics_serving`.`call_duration_seconds` IS NOT NULL AND
+    `amp_conversation_metrics_serving`.`tenant_name` IS NOT NULL
+
+    GROUP BY `amp_conversation_metrics_serving`.`tenant_name`
+
+    ORDER BY avg_call_duration_seconds DESC
+
+    LIMIT 100'
+metadata:
+  category: tenant_metrics
+  natural_language_source: "average call duration per tenant \n"
+  genie_conversation_id: 01f079e25c5e1ba1bf9337ef80d1beee
+  genie_message_id: 01f079e25c661d3b9ba20032fccf2b6f
+  created_by: genie_natural_language

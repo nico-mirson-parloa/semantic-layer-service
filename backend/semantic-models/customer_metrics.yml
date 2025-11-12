@@ -1,0 +1,56 @@
+name: customer_metrics
+description: Semantic model for customer metrics
+model: ref('parloa-prod-weu')
+entities:
+- name: tenant_id
+  type: primary
+  expr: tenant_id
+dimensions:
+- name: tenant_id
+  type: categorical
+  expr: '`tenant_id`'
+- name: tenant_name
+  type: categorical
+  expr: '`tenant_name`'
+- name: year_amp_llmo_conversation_start_timestamp
+  type: time
+  expr: YEAR(`amp_llmo_conversation_start_timestamp`)
+  time_granularity:
+  - day
+  - week
+  - month
+  - quarter
+  - year
+- name: month_amp_llmo_conversation_start_timestamp
+  type: time
+  expr: MONTH(`amp_llmo_conversation_start_timestamp`)
+  time_granularity:
+  - day
+  - week
+  - month
+  - quarter
+  - year
+measures:
+- name: count__
+  agg: count
+  expr: '*'
+  description: Count of *
+metrics:
+- name: calls_per_tenant_per_month
+  type: simple
+  measure: count__
+  description: Total calls per tenant per month in 2025
+  sql: "SELECT \n  `tenant_id`,\n  `tenant_name`,\n  YEAR(`amp_llmo_conversation_start_timestamp`)\
+    \ AS year,\n  MONTH(`amp_llmo_conversation_start_timestamp`) AS month,\n  COUNT(*)\
+    \ AS num_calls\nFROM `parloa-prod-weu`.`analytics`.`amp_conversation_metrics_serving`\n\
+    WHERE \n  `amp_llmo_conversation_start_timestamp` IS NOT NULL\n  AND `tenant_id`\
+    \ IS NOT NULL\n  AND YEAR(`amp_llmo_conversation_start_timestamp`) = 2025\nGROUP\
+    \ BY \n  `tenant_id`,\n  `tenant_name`,\n  YEAR(`amp_llmo_conversation_start_timestamp`),\n\
+    \  MONTH(`amp_llmo_conversation_start_timestamp`)\nORDER BY \n  `tenant_id`,\n\
+    \  year,\n  month\nLIMIT 100"
+metadata:
+  category: customer metrics
+  natural_language_source: Number of calls per tenant per month in 2025
+  genie_conversation_id: 01f0b979d67e1ec7be8d57a609c9c43a
+  genie_message_id: 01f0b979d68c1612822ade56f901123c
+  created_by: genie_natural_language

@@ -1,0 +1,141 @@
+# Semantic Model: amp_consumption_conversation_legacy_model
+# Generated on: 2025-11-04T14:24:33.302485
+# Source table: parloa-prod-weu.analytics.amp_consumption_conversation_legacy
+# Generation confidence: 64.88%
+
+semantic_model:
+  name: amp_consumption_conversation_legacy_model
+  description: test
+  model: ref('parloa-prod-weu.analytics.amp_consumption_conversation_legacy')
+  defaults:
+    agg_time_dimension: event_date
+  dimensions:
+  - name: tenant_id
+    type: categorical
+    expr: tenant_id
+    description: Unique identifier for the customer tenant
+  - name: tenant_name
+    type: categorical
+    expr: tenant_name
+    description: Display name of the customer tenant
+  - name: event_date
+    type: time
+    expr: event_date
+    description: Date of the consumption events being aggregated
+    type_params:
+      time_granularity:
+      - day
+      - week
+      - month
+      - quarter
+      - year
+  measures:
+  - name: pure_minutes_sum
+    agg: sum
+    expr: pure_minutes
+    description: SUM of pure_minutes
+  - name: billed_minutes_sum
+    agg: sum
+    expr: billed_minutes
+    description: SUM of billed_minutes
+  - name: premium_tts_billed_minutes_sum
+    agg: sum
+    expr: premium_tts_billed_minutes
+    description: SUM of premium_tts_billed_minutes
+  - name: pure_minutes_avg
+    agg: avg
+    expr: pure_minutes
+    description: AVG of pure_minutes
+  - name: billed_minutes_avg
+    agg: avg
+    expr: billed_minutes
+    description: AVG of billed_minutes
+  - name: premium_tts_billed_minutes_avg
+    agg: avg
+    expr: premium_tts_billed_minutes
+    description: AVG of premium_tts_billed_minutes
+  - name: pure_minutes_count_distinct
+    agg: count_distinct
+    expr: pure_minutes
+    description: COUNT_DISTINCT of pure_minutes
+  - name: billed_minutes_count_distinct
+    agg: count_distinct
+    expr: billed_minutes
+    description: COUNT_DISTINCT of billed_minutes
+  - name: premium_tts_billed_minutes_count_distinct
+    agg: count_distinct
+    expr: premium_tts_billed_minutes
+    description: COUNT_DISTINCT of premium_tts_billed_minutes
+metrics:
+- name: total_pure_minutes
+  description: Total pure minutes
+  type: simple
+  type_params:
+    measure:
+      name: pure_minutes
+      agg: sum
+  filter: null
+- name: total_billed_minutes
+  description: Total billed minutes
+  type: simple
+  type_params:
+    measure:
+      name: billed_minutes
+      agg: sum
+  filter: null
+- name: total_premium_tts_billed_minutes
+  description: Total premium tts billed minutes
+  type: simple
+  type_params:
+    measure:
+      name: premium_tts_billed_minutes
+      agg: sum
+  filter: null
+- name: avg_pure_minutes
+  description: Average pure minutes
+  type: simple
+  type_params:
+    measure:
+      name: pure_minutes
+      agg: avg
+  filter: null
+- name: avg_billed_minutes
+  description: Average billed minutes
+  type: simple
+  type_params:
+    measure:
+      name: billed_minutes
+      agg: avg
+  filter: null
+- name: avg_premium_tts_billed_minutes
+  description: Average premium tts billed minutes
+  type: simple
+  type_params:
+    measure:
+      name: premium_tts_billed_minutes
+      agg: avg
+  filter: null
+- name: distinct_pure_minutes
+  description: Unique pure minutes count
+  type: simple
+  type_params:
+    measure:
+      name: pure_minutes
+      agg: count_distinct
+  filter: null
+- name: distinct_billed_minutes
+  description: Unique billed minutes count
+  type: simple
+  type_params:
+    measure:
+      name: billed_minutes
+      agg: count_distinct
+  filter: null
+- name: distinct_premium_tts_billed_minutes
+  description: Unique premium tts billed minutes count
+  type: simple
+  type_params:
+    measure:
+      name: premium_tts_billed_minutes
+      agg: count_distinct
+  filter: null
