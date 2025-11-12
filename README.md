@@ -23,17 +23,17 @@ A modern semantic layer service that generates semantic models from Databricks g
 - Row-level security and access control
 - **PostgreSQL-compatible SQL API** for universal BI tool connectivity
 
-#### Advanced Features (Phase 2)
-- **✅ Automatic Model Generation**: AI-powered generation from gold layer tables
+#### Advanced Features
+- **Automatic Model Generation**: AI-powered generation from gold layer tables
   - Intelligent pattern recognition and analysis
   - Industry-specific metric suggestions with confidence scoring
   - Interactive customization wizard
   - One-click YAML generation and validation
-- **🚧 Documentation Generation**: Auto-generate comprehensive documentation
+- **Documentation Generation**: Auto-generate comprehensive documentation
   - Multiple export formats (Markdown, HTML, PDF, Confluence)
   - Template system for different audiences
   - Usage examples and best practices
-- **📋 Lineage Visualization**: Interactive data lineage tracking
+- **Lineage Visualization**: Interactive data lineage tracking
   - Table and column-level lineage graphs
   - Impact analysis and dependency tracking
   - Real-time updates from Unity Catalog
@@ -58,8 +58,10 @@ semantic-layer-service/
 │   │   └── utils/          # Utility functions
 │   └── package.json
 ├── semantic-models/        # YAML semantic model definitions
-├── docs/                  # Documentation and specs
-└── docker-compose.yml     # Local development setup
+├── specifications/         # Technical specifications and documentation
+├── tmux-orchestrator/      # Multi-agent orchestration scripts
+├── examples/               # Usage examples and demos
+└── docker-compose.yml      # Local development setup
 ```
 
 ## Technology Stack
@@ -513,7 +515,7 @@ psql -h localhost -p 5433 -U user -d semantic_layer
 SELECT * FROM sem_sales_metrics.fact LIMIT 10;
 ```
 
-See [SQL API Guide](docs/SQL_API_GUIDE.md) for detailed documentation.
+See `backend/app/sql_api/` for implementation details and `examples/sql_api_demo.py` for usage examples.
 
 ### Preset (Apache Superset) Integration
 
@@ -532,7 +534,7 @@ This will:
 - Build dashboard templates
 - Export metrics configurations
 
-See [Preset Integration Guide](docs/PRESET_INTEGRATION_GUIDE.md) for complete setup instructions.
+See `backend/app/connectors/preset/README.md` for complete setup instructions and usage examples.
 
 ## Semantic Model Structure
 
@@ -570,54 +572,39 @@ semantic_model:
       denominator: order_count
 ```
 
-## Development Roadmap
-
-### Phase 1: Foundation (Current)
-- [ ] Project structure setup
-- [ ] Basic Databricks connectivity
-- [ ] Simple semantic model parser
-
-### Phase 2: Core Features
-- [ ] Metadata discovery from Unity Catalog
-- [ ] Interactive model builder UI
-- [ ] Query execution engine
-
-### Phase 3: Advanced Features
-- [ ] Automatic model generation
-- [ ] Documentation generation
-- [ ] Lineage visualization
-- [ ] Performance optimization
-
-### Phase 4: Enterprise Features
-- [ ] Multi-tenant support
-- [ ] Role-based access control
-- [ ] Advanced caching strategies
-- [ ] API rate limiting
-
 ## 📚 Documentation
 
-Comprehensive documentation is available in the [`docs/`](docs/) directory:
+Project documentation is organized in the following locations:
 
-- **[Quick Start Guide](docs/QUICKSTART.md)** - Get up and running quickly
-- **[Development Guide](docs/DEVELOPMENT.md)** - Development setup and workflow
-- **[API Reference](docs/API_REFERENCE.md)** - Complete REST API documentation
-- **[SQL API Guide](docs/SQL_API_GUIDE.md)** - PostgreSQL-compatible SQL interface
-- **[Preset Integration Guide](docs/PRESET_INTEGRATION_GUIDE.md)** - Connect Preset BI platform
-- **[Testing Guide](docs/TESTING_GUIDE.md)** - Testing strategy and best practices
-- **[Semantic Layer Guide](docs/SEMANTIC_LAYER_GUIDE.md)** - Core concepts and implementation
-- **[Frontend Specification](docs/FRONTEND_SPEC.md)** - UI component specifications
+### Specifications
+Detailed technical specifications are in the [`specifications/`](specifications/) directory:
+- **[00-INDEX.md](specifications/00-INDEX.md)** - Overview of all specifications
+- **[01-PROJECT-OVERVIEW.md](specifications/01-PROJECT-OVERVIEW.md)** - Project goals and architecture
+- **[03-BACKEND-SPECIFICATION.md](specifications/03-BACKEND-SPECIFICATION.md)** - Backend API and services
+- **[04-FRONTEND-SPECIFICATION.md](specifications/04-FRONTEND-SPECIFICATION.md)** - Frontend components and pages
+- **[09-DEPLOYMENT.md](specifications/09-DEPLOYMENT.md)** - Deployment and infrastructure
+- **[11-DEPENDENCIES.md](specifications/11-DEPENDENCIES.md)** - Technology stack and dependencies
 
-See the [Documentation Index](docs/README.md) for a complete list of available documentation.
+### Implementation Details
+- **Backend API Documentation**: See `backend/app/api/` for endpoint implementations
+- **SQL API**: See `backend/app/sql_api/` and `examples/sql_api_demo.py`
+- **Preset Integration**: See `backend/app/connectors/preset/README.md`
+- **Semantic Models**: See `semantic-models/` for example YAML definitions
+
+### Orchestration
+- **[tmux-orchestrator/CLAUDE.md](tmux-orchestrator/CLAUDE.md)** - Complete orchestration protocols and guidelines
+- **[tmux-orchestrator/README.md](tmux-orchestrator/README.md)** - Orchestrator system overview
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes following the [Development Guide](docs/DEVELOPMENT.md)
-4. Add tests with good coverage (see [Testing Guide](docs/TESTING_GUIDE.md))
-5. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+3. Make your changes following [.claude/CLAUDE.md](.claude/CLAUDE.md) guidelines
+4. Add tests with good coverage (see `backend/tests/` for examples)
+5. Run linters and ensure code quality
+6. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+7. Push to the branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
 
 ## 📄 License
 
