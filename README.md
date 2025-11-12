@@ -157,6 +157,8 @@ semantic-layer-service/
 
 This project includes an innovative AI-powered development workflow using tmux sessions and multiple Claude Code agents orchestrated together.
 
+> **Note**: This setup uses a custom tmux configuration with `Ctrl+s` as the prefix key. See the [Tmux Commands Reference](#tmux-commands-reference) section for all available keybindings.
+
 ### What is the Tmux Orchestrator?
 
 The tmux orchestrator is a system where multiple Claude Code agents work simultaneously across different tmux windows/panes, each responsible for different aspects of the codebase:
@@ -224,10 +226,11 @@ Schedules follow-up checks and reminders:
    ```
 
 3. **Navigate between windows**:
-   - `Ctrl+b 0-9`: Switch to window 0-9
-   - `Ctrl+b n`: Next window
-   - `Ctrl+b p`: Previous window
-   - `Ctrl+b w`: List all windows
+   - `Ctrl+s 0-9`: Switch to window 0-9
+   - `Ctrl+s n`: Create new session
+   - `Ctrl+s [`: Previous window
+   - `Ctrl+s ]`: Next window
+   - Mouse click: Click on window in status bar (mouse support enabled)
 
 4. **Communicate with agents**:
    ```bash
@@ -240,6 +243,38 @@ Schedules follow-up checks and reminders:
    # Capture output from an agent's window
    tmux capture-pane -t semantic:2 -p | tail -50
    ```
+
+### Tmux Commands Reference
+
+Your tmux configuration uses `Ctrl+s` as the prefix key (instead of the default `Ctrl+b`).
+
+#### Session Management
+- `Ctrl+s n`: Create new session
+- `Ctrl+s r`: Rename current session
+- `Ctrl+s k`: Kill current session (with confirmation)
+- `Ctrl+s d`: Detach from session
+
+#### Window Management
+- `Ctrl+s c`: Create new window
+- `Ctrl+s d`: Kill current window
+- `Ctrl+s 0-9`: Switch to window number 0-9
+- `Ctrl+s [`: Previous window
+- `Ctrl+s ]`: Next window
+- Click window name in status bar with mouse
+
+#### Pane Management
+- `Ctrl+s v`: Split window vertically (side by side)
+- `Ctrl+s h`: Split window horizontally (top/bottom)
+- `Ctrl+s x`: Kill current pane
+- `Ctrl+s h/j/k/l`: Navigate between panes (vim-style)
+- `Ctrl+Shift+Arrow`: Resize pane in arrow direction
+- Mouse: Click to focus pane, drag border to resize
+
+#### Configuration
+- `Ctrl+s R`: Reload tmux configuration
+- Windows numbered starting from 1 (not 0)
+- Mouse support enabled throughout
+- Copy mode uses vim keybindings
 
 ### Benefits
 
