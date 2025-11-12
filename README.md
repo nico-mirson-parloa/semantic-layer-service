@@ -212,37 +212,140 @@ Schedules follow-up checks and reminders:
 ./schedule_with_note.sh 30 "Check backend deployment status" semantic:0
 ```
 
+### Quick Setup Guide
+
+#### Step 1: Make Scripts Executable
+
+```bash
+cd tmux-orchestrator
+chmod +x setup_tmux_orchestrator.sh
+chmod +x send-claude-message.sh
+chmod +x schedule_with_note.sh
+```
+
+#### Step 2: Create Orchestrator Session
+
+```bash
+# Create a new tmux session for the orchestrator
+tmux new-session -s semantic-layer
+
+# Start Claude Code with permissions bypass
+claude --dangerously-skip-permissions
+```
+
+#### Step 3: Initialize the Orchestrator
+
+Give Claude this initial prompt:
+
+```
+You are an AI orchestrator for the semantic-layer-service project.
+
+First, let's verify the setup:
+
+1. Check what tmux window you're in:
+   Run: tmux display-message -p "#{session_name}:#{window_index}"
+
+2. Test the scheduling script:
+   Run: ./tmux-orchestrator/schedule_with_note.sh 1 "Test message" semantic-layer:0
+
+3. If both work, tell me "Setup successful!"
+
+Then I'll give you the project specifications to work on.
+```
+
+#### Step 4: Start the Development Workflow
+
+Once setup is verified, give Claude this prompt:
+
+```
+I need you to work on the semantic-layer-service project following the specifications in ./specifications/
+
+Please:
+1. Read the specifications in ./specifications/ (start with 00-INDEX.md)
+2. Create a backend team (PM + Developer) in separate tmux windows
+3. Create a frontend team (PM + Developer) in separate tmux windows
+4. Have them build according to the specs
+5. Check on both teams every 15 minutes
+6. Ensure 30-minute auto-commits for all agents
+
+Key files to reference:
+- .claude/CLAUDE.md - Project-specific development guidelines
+- specifications/00-INDEX.md - Overview of all specifications
+- specifications/03-BACKEND-SPECIFICATION.md - Backend implementation details
+- specifications/04-FRONTEND-SPECIFICATION.md - Frontend implementation details
+
+Start both teams working simultaneously. Coordinate work between backend and frontend.
+```
+
+#### Step 5: Monitor the Agents
+
+```bash
+# See all tmux sessions
+tmux ls
+
+# See what a specific agent is doing (replace window number)
+tmux capture-pane -t semantic-layer:0 -p | tail -30   # Orchestrator
+tmux capture-pane -t semantic-layer:1 -p | tail -30   # PM
+tmux capture-pane -t semantic-layer:2 -p | tail -30   # Backend Developer
+tmux capture-pane -t semantic-layer:3 -p | tail -30   # Frontend Developer
+
+# Send a message to an agent
+./tmux-orchestrator/send-claude-message.sh semantic-layer:2 "What's your current status?"
+```
+
 ### Using the Orchestrator
 
-1. **Start the orchestrator session**:
+1. **Attach to the session**:
    ```bash
-   cd tmux-orchestrator
-   ./setup_tmux_orchestrator.sh
+   tmux attach-session -t semantic-layer
    ```
 
-2. **Attach to the session**:
-   ```bash
-   tmux attach-session -t semantic
-   ```
-
-3. **Navigate between windows**:
+2. **Navigate between windows**:
    - `Ctrl+s 0-9`: Switch to window 0-9
    - `Ctrl+s n`: Create new session
    - `Ctrl+s [`: Previous window
    - `Ctrl+s ]`: Next window
    - Mouse click: Click on window in status bar (mouse support enabled)
 
-4. **Communicate with agents**:
+3. **Communicate with agents**:
    ```bash
    # From orchestrator window, send messages to other agents
-   ./send-claude-message.sh semantic:2 "Please implement the authentication endpoint"
+   ./tmux-orchestrator/send-claude-message.sh semantic-layer:2 "Please implement the authentication endpoint"
    ```
 
-5. **Monitor agent work**:
+4. **Monitor agent work**:
    ```bash
    # Capture output from an agent's window
-   tmux capture-pane -t semantic:2 -p | tail -50
+   tmux capture-pane -t semantic-layer:2 -p | tail -50
    ```
+
+### Example Workflow
+
+Here's a complete example of starting a new feature:
+
+```bash
+# 1. Start tmux session
+tmux new-session -s semantic-layer
+
+# 2. Start Claude orchestrator
+claude --dangerously-skip-permissions
+
+# 3. Give orchestrator the initialization prompt (see Step 3 above)
+
+# 4. Once verified, give the development workflow prompt (see Step 4 above)
+
+# 5. Detach from session to let agents work
+Ctrl+s d
+
+# 6. Check back later to see progress
+tmux attach-session -t semantic-layer
+
+# 7. Monitor specific agents
+tmux capture-pane -t semantic-layer:2 -p | tail -30
+
+# 8. Send messages to guide agents
+./tmux-orchestrator/send-claude-message.sh semantic-layer:1 "Update on backend API status?"
+```
 
 ### Tmux Commands Reference
 
@@ -276,6 +379,40 @@ Your tmux configuration uses `Ctrl+s` as the prefix key (instead of the default 
 - Mouse support enabled throughout
 - Copy mode uses vim keybindings
 
+### Agent Roles and Responsibilities
+
+When the orchestrator creates teams, each agent has specific responsibilities:
+
+#### Orchestrator (Window 0)
+- **Role**: High-level coordination and oversight
+- **Tasks**:
+  - Create and manage agent teams
+  - Monitor overall progress
+  - Resolve cross-team dependencies
+  - Schedule 15-minute check-ins
+  - Ensure 30-minute commit discipline
+- **Prompts to use**: See Step 3 and Step 4 in Quick Setup
+
+#### Project Manager (Windows 1, 3, etc.)
+- **Role**: Team coordination and quality assurance
+- **Tasks**:
+  - Ensure specs are followed
+  - Review code quality
+  - Track team progress
+  - Report to orchestrator
+  - Enforce git discipline
+- **Example brief**: "You are the Backend PM. Coordinate with the backend developer, ensure specs in specifications/03-BACKEND-SPECIFICATION.md are followed, and maintain high quality standards."
+
+#### Developer (Windows 2, 4, etc.)
+- **Role**: Implementation
+- **Tasks**:
+  - Write code according to specs
+  - Commit every 30 minutes
+  - Report to PM
+  - Follow .claude/CLAUDE.md guidelines
+  - Run tests and linters
+- **Example brief**: "You are the Backend Developer. Implement the FastAPI backend according to specifications/03-BACKEND-SPECIFICATION.md. Work with your PM and commit every 30 minutes."
+
 ### Benefits
 
 - **Parallel Development**: Multiple agents work simultaneously on different parts
@@ -283,14 +420,19 @@ Your tmux configuration uses `Ctrl+s` as the prefix key (instead of the default 
 - **Quality Assurance**: PM agent ensures high standards are maintained
 - **Clear Communication**: Structured messaging protocols prevent confusion
 - **Coordinated Workflow**: Orchestrator manages dependencies and priorities
+- **Specification-Driven**: All work follows documented specifications
+- **Automated Commits**: 30-minute commit discipline prevents work loss
 
 ### Best Practices
 
-1. **Regular Status Updates**: Agents report progress every 30 minutes
-2. **Commit Frequently**: Auto-commit every 30 minutes to prevent work loss
-3. **Use Feature Branches**: Each major task gets its own branch
-4. **Quality Gates**: PM reviews all work before merging
-5. **Clear Communication**: Use structured message templates
+1. **Always Start with Specs**: Ensure specifications are clear before starting agents
+2. **Regular Status Updates**: Agents report progress every 30 minutes
+3. **Commit Frequently**: Auto-commit every 30 minutes to prevent work loss
+4. **Use Feature Branches**: Each major task gets its own branch
+5. **Quality Gates**: PM reviews all work before merging
+6. **Clear Communication**: Use structured message templates
+7. **Monitor Regularly**: Check agent windows every 15-30 minutes
+8. **Use the Scripts**: Always use send-claude-message.sh for inter-agent communication
 
 See [`tmux-orchestrator/CLAUDE.md`](tmux-orchestrator/CLAUDE.md) for complete orchestration protocols and guidelines.
 
